@@ -6,7 +6,7 @@ from datetime import datetime
 st.set_page_config(page_title="Comparare Proiecte Excel", layout="wide")
 
 st.title("🗂️ Comparare Proiecte între două versiuni Excel")
-st.write("Încarcă două fișiere Excel care conțin sheet-urile 'pipeline' și 'SOP'. Scriptul va detecta automat diferențele.")
+st.write("Încarcă două fișiere Excel care conțin sheet-urile 'PIPELINE' și 'SOP'. Scriptul va detecta automat diferențele.")
 
 file_old = st.file_uploader("Fișier Excel - Vechi", type=["xlsx"], key="old")
 file_new = st.file_uploader("Fișier Excel - Nou", type=["xlsx"], key="new")
@@ -38,7 +38,7 @@ def read_clean_excel(file, sheet_name):
 def load_data(file):
     # Încarcă ambele sheet-uri curate
     return {
-        "pipeline": read_clean_excel(file, "pipeline"),
+        "PIPELINE": read_clean_excel(file, "PIPELINE"),
         "SOP": read_clean_excel(file, "SOP")
     }
 
@@ -82,8 +82,8 @@ if file_old and file_new:
         data_new = load_data(file_new)
 
         # Statistici generale
-        st.markdown(f"- **Nr. proiecte în pipeline vechi:** {len(data_old['pipeline'])}")
-        st.markdown(f"- **Nr. proiecte în pipeline nou:** {len(data_new['pipeline'])}")
+        st.markdown(f"- **Nr. proiecte în pipeline vechi:** {len(data_old['PIPELINE'])}")
+        st.markdown(f"- **Nr. proiecte în pipeline nou:** {len(data_new['PIPELINE'])}")
         st.markdown(f"- **Nr. proiecte în SOP vechi:** {len(data_old['SOP'])}")
         st.markdown(f"- **Nr. proiecte în SOP nou:** {len(data_new['SOP'])}")
         st.markdown(f"- **Raport generat la:** `{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}`")
@@ -98,7 +98,7 @@ if file_old and file_new:
         # 1. Proiecte noi în pipeline
         st.subheader("1. Proiecte nou apărute în pipeline")
         added_pipeline, modified_pipeline, removed_pipeline = compare_data(
-            data_old["pipeline"], data_new["pipeline"], "Asgard ID")
+            data_old["PIPELINE"], data_new["PIPELINE"], "Asgard ID")
         st.write(added_pipeline)
 
         # 2. Proiecte modificate în pipeline
@@ -118,7 +118,7 @@ if file_old and file_new:
         st.write(removed_in_sop)
 
         # 5. Proiecte apărute în SOP care nu erau în pipeline
-        sop_added, _, _ = compare_data(data_old["pipeline"], data_new["SOP"], "Asgard ID")
+        sop_added, _, _ = compare_data(data_old["PIPELINE"], data_new["SOP"], "Asgard ID")
         st.subheader("5. Proiecte apărute în SOP care nu erau în pipeline")
         st.write(sop_added)
 
@@ -161,8 +161,8 @@ if file_old and file_new:
             write_title("Informații generale")
             pdf.multi_cell(0, 5, f"Fișier vechi: {file_old.name}")
             pdf.multi_cell(0, 5, f"Fișier nou: {file_new.name}")
-            pdf.multi_cell(0, 5, f"Nr. proiecte în pipeline vechi: {len(data_old['pipeline'])}")
-            pdf.multi_cell(0, 5, f"Nr. proiecte în pipeline nou: {len(data_new['pipeline'])}")
+            pdf.multi_cell(0, 5, f"Nr. proiecte în pipeline vechi: {len(data_old['PIPELINE'])}")
+            pdf.multi_cell(0, 5, f"Nr. proiecte în pipeline nou: {len(data_new['PIPELINE'])}")
             pdf.multi_cell(0, 5, f"Nr. proiecte în SOP vechi: {len(data_old['SOP'])}")
             pdf.multi_cell(0, 5, f"Nr. proiecte în SOP nou: {len(data_new['SOP'])}")
             pdf.multi_cell(0, 5, f"Raport generat la: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")

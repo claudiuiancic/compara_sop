@@ -187,8 +187,8 @@ if file_old and file_new:
                     pdf.multi_cell(0, 5, line)
                     pdf.ln(1)
 
-            write_title("Informații generale")
-            pdf.multi_cell(0, 5, f"Raport generat la: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+            write_title("Raport de schimbări în SOP și pipeline")
+            pdf.multi_cell(0, 5, f"Generat la: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
             pdf.multi_cell(0, 5, f"Fișier vechi: {file_old.name}")
             pdf.multi_cell(0, 5, f"Fișier nou: {file_new.name}")
             pdf.multi_cell(0, 5, f"Nr. magazine în PIPELINE vechi: {lung_pip_vechi_minusdoi} --> noi: {lung_pip_noi_minusdoi}")

@@ -122,7 +122,10 @@ if file_old and file_new:
 
         _, sop_modified, _ = compare_data(data_old["SOP"], data_new["SOP"], "Asgard ID")
         st.subheader("6. Proiecte din SOP la care s-au modificat parametri")
-        st.write(pd.DataFrame(sop_modified)[["Asgard ID", "Diferențe"]])
+        if sop_modified:
+            st.write(pd.DataFrame(sop_modified)[["Asgard ID", "Diferențe"]])
+        else:
+            st.write("Nu există proiecte modificate în SOP.")
 
         _, _, sop_removed = compare_data(data_old["SOP"], data_new["SOP"], "Asgard ID")
         st.subheader("7. Proiecte care au fost scoase din lista SOP")
@@ -171,7 +174,7 @@ if file_old and file_new:
                 ("3. Proiecte scoase din PIPELINE care nu au apărut în SOP", removed_not_in_sop),
                 ("4. Proiecte scoase din PIPELINE care au apărut în SOP", removed_in_sop),
                 ("5. Proiecte apărute în SOP care nu erau în PIPELINE", sop_added),
-                ("6. Proiecte din SOP la care s-au modificat parametri", pd.DataFrame(sop_modified)[["Asgard ID", "Diferențe"]]),
+                ("6. Proiecte din SOP la care s-au modificat parametri", pd.DataFrame(sop_modified)[["Asgard ID", "Diferențe"]]) if sop_modified else ("6. Proiecte din SOP la care s-au modificat parametri", pd.DataFrame()),
                 ("7. Proiecte care au fost scoase din lista SOP", sop_removed),
             ]
 

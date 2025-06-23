@@ -92,6 +92,7 @@ if file_old and file_new:
         st.markdown(f"- **Nr. proiecte în SOP nou:** {len(data_new['SOP'])}")
         st.markdown(f"- **Raport generat la:** `{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}`")
 
+        
         st.header("📊 Rezultatele comparației")
 
         added_pipeline, modified_pipeline, removed_pipeline = compare_data(
@@ -183,10 +184,10 @@ if file_old and file_new:
                 pdf.ln(3)
 
             pdf_buffer = io.BytesIO()
-            pdf.output(pdf_buffer)
+            pdf_bytes = pdf.output(dest='S').encode('latin1')
             st.download_button(
                 label="📥 Descarcă PDF",
-                data=pdf_buffer.getvalue(),
+                data=pdf_bytes,
                 file_name="raport_proiecte.pdf",
                 mime="application/pdf"
             )

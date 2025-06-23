@@ -83,6 +83,8 @@ def compare_data(old_df, new_df, id_col):
 if file_old and file_new:
     try:
         st.header("📄 Informații generale")
+
+        st.markdown(f"- **Raport generat la:** `{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}`")
         st.markdown(f"- **Fișier vechi:** `{file_old.name}`")
         st.markdown(f"- **Fișier nou:** `{file_new.name}`")
 
@@ -97,12 +99,9 @@ if file_old and file_new:
         lung_sop_noi = len(data_new['SOP'])
         lung_sop_noi_minusdoi = lung_sop_noi - 2
 
-        st.markdown(f"- **Nr. magazine în PIPELINE vechi: {lung_pip_vechi_minusdoi} -> noi: {lung_pip_noi_minusdoi}**")
-        st.markdown(f"- **Nr. magazine în SOP vechi: {lung_sop_vechi_minusdoi} -> noi: {lung_sop_noi_minusdoi}**")
+        st.markdown(f"- **Nr. magazine în PIPELINE vechi: {lung_pip_vechi_minusdoi} --> noi: {lung_pip_noi_minusdoi}**")
+        st.markdown(f"- **Nr. magazine în SOP vechi: {lung_sop_vechi_minusdoi} --> noi: {lung_sop_noi_minusdoi}**")
 
-        st.markdown(f"- **Raport generat la:** `{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}`")
-
-        
         st.header("📊 Rezultatele comparației")
 
         added_pipeline, modified_pipeline, removed_pipeline = compare_data(

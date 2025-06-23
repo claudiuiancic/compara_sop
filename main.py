@@ -90,14 +90,16 @@ if file_old and file_new:
         data_new = load_data(file_new)
         lung_pipeline_vechi = len(data_old['PIPELINE'])
         lung_pip_vechi_minusdoi = lung_pipeline_vechi - 2
+        lung_sop_vechi = len(data_old['SOP'])
+        lung_sop_vechi_minusdoi = lung_pipeline_vechi - 2
+        lung_pipeline_noi = len(data_new['PIPELINE'])
+        lung_pip_noi_minusdoi = lung_pipeline_noi - 2
+        lung_sop_noi = len(data_new['SOP'])
+        lung_sop_noi_minusdoi = lung_pipeline_noi - 2
 
-        st.markdown(f"- **Nr. proiecte în PIPELINE vechi:** {len(data_old['PIPELINE'])}")
-        st.markdown(lung_pipeline_vechi)
-        st.markdown(lung_pip_vechi_minusdoi)
-        st.markdown(f"- **Nr. proiecte în PIPELINE vechi:** {lung_pip_vechi_minusdoi}")
-        st.markdown(f"- **Nr. proiecte în PIPELINE nou:** {len(data_new['PIPELINE'])}")
-        st.markdown(f"- **Nr. proiecte în SOP vechi:** {len(data_old['SOP'])}")
-        st.markdown(f"- **Nr. proiecte în SOP nou:** {len(data_new['SOP'])}")
+        st.markdown(f"- **Nr. magazine în PIPELINE vechi: {lung_pip_vechi_minusdoi} -> noi: {lung_pip_noi_minusdoi}**")
+        st.markdown(f"- **Nr. magazine în SOP vechi: {lung_sop_vechi_minusdoi} -> noi: {lung_sop_noi_minusdoi}**")
+
         st.markdown(f"- **Raport generat la:** `{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}`")
 
         

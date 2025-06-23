@@ -162,15 +162,8 @@ if file_old and file_new:
             pdf.multi_cell(0, 5, f"Raport generat la: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
             pdf.multi_cell(0, 5, f"Fișier vechi: {file_old.name}")
             pdf.multi_cell(0, 5, f"Fișier nou: {file_new.name}")
-
             pdf.multi_cell(0, 5, f"Nr. magazine în PIPELINE vechi: {lung_pip_vechi_minusdoi} --> noi: {lung_pip_noi_minusdoi}")
             pdf.multi_cell(0, 5, f"Nr. magazine în SOP vechi: {lung_sop_vechi_minusdoi} --> noi: {lung_sop_noi_minusdoi}")
-
-            pdf.multi_cell(0, 5, f"Nr. magazine în PIPELINE vechi: {len(data_old['PIPELINE'])}")
-            pdf.multi_cell(0, 5, f"Nr. magazine în PIPELINE nou: {len(data_new['PIPELINE'])}")
-            pdf.multi_cell(0, 5, f"Nr. magazine în SOP vechi: {len(data_old['SOP'])}")
-            pdf.multi_cell(0, 5, f"Nr. magazine în SOP nou: {len(data_new['SOP'])}")
-            
             pdf.ln(5)
 
             added_pipeline, modified_pipeline, removed_pipeline = compare_data(data_old["PIPELINE"], data_new["PIPELINE"], "Asgard ID")
@@ -178,7 +171,7 @@ if file_old and file_new:
             sop_new_ids = set(data_new["SOP"]["Asgard ID"])
             removed_not_in_sop = removed_pipeline[~removed_pipeline["Asgard ID"].isin(sop_new_ids)]
             removed_in_sop = removed_pipeline[removed_pipeline["Asgard ID"].isin(sop_new_ids)]
-            sop_added, _, _ = compare_data(data_old["PIPELINE"], data_new["SOP"], "Asgard ID")
+            sop_added, _, _ = compare_data(data_old["SOP"], data_new["SOP"], "Asgard ID")
             _, sop_modified, _ = compare_data(data_old["SOP"], data_new["SOP"], "Asgard ID")
             _, _, sop_removed = compare_data(data_old["SOP"], data_new["SOP"], "Asgard ID")
 

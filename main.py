@@ -108,10 +108,10 @@ if file_old and file_new:
             data_old["PIPELINE"], data_new["PIPELINE"], "Asgard ID"
         )
 
-        st.subheader("1. Proiecte nou apărute în PIPELINE")
+        st.subheader("1. Magazine nou apărute în PIPELINE")
         st.write(added_pipeline)
 
-        st.subheader("2. Proiecte din PIPELINE care au suferit modificări")
+        st.subheader("2. Magazine din PIPELINE care au suferit modificări")
         st.write(pd.DataFrame(modified_pipeline)[["Asgard ID", "City", "Diferențe"]])
 
         removed_ids = set(removed_pipeline["Asgard ID"])
@@ -119,25 +119,25 @@ if file_old and file_new:
         removed_not_in_sop = removed_pipeline[~removed_pipeline["Asgard ID"].isin(sop_new_ids)]
         removed_in_sop = removed_pipeline[removed_pipeline["Asgard ID"].isin(sop_new_ids)]
 
-        st.subheader("3. Proiecte scoase din PIPELINE care nu au apărut în SOP")
+        st.subheader("3. Magazine scoase din PIPELINE care nu au apărut în SOP")
         st.write(removed_not_in_sop)
 
-        st.subheader("4. Proiecte scoase din PIPELINE care au apărut în SOP")
+        st.subheader("4. Magazine scoase din PIPELINE care au apărut în SOP")
         st.write(removed_in_sop)
 
         sop_added, _, _ = compare_data(data_old["SOP"], data_new["SOP"], "Asgard ID")
-        st.subheader("5. Proiecte apărute în SOP nou, care nu erau în SOP vechi")
+        st.subheader("5. Magazine apărute în SOP nou, care nu erau în SOP vechi")
         st.write(sop_added)
 
         _, sop_modified, _ = compare_data(data_old["SOP"], data_new["SOP"], "Asgard ID")
-        st.subheader("6. Proiecte din SOP la care s-au modificat parametri")
+        st.subheader("6. Magazine din SOP la care s-au modificat parametri")
         if sop_modified:
             st.write(pd.DataFrame(sop_modified)[["Asgard ID", "Diferențe"]])
         else:
-            st.write("Nu există proiecte modificate în SOP.")
+            st.write("Nu există Magazine modificate în SOP.")
 
         _, _, sop_removed = compare_data(data_old["SOP"], data_new["SOP"], "Asgard ID")
-        st.subheader("7. Proiecte care au fost scoase din lista SOP")
+        st.subheader("7. Magazine care au fost scoase din lista SOP")
         st.write(sop_removed)
 
         st.header("📥 Export Raport în PDF")
@@ -159,13 +159,18 @@ if file_old and file_new:
                     pdf.ln(1)
 
             write_title("Informații generale")
+            pdf.multi_cell(0, 5, f"Raport generat la: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
             pdf.multi_cell(0, 5, f"Fișier vechi: {file_old.name}")
             pdf.multi_cell(0, 5, f"Fișier nou: {file_new.name}")
-            pdf.multi_cell(0, 5, f"Nr. proiecte în PIPELINE vechi: {len(data_old['PIPELINE'])}")
-            pdf.multi_cell(0, 5, f"Nr. proiecte în PIPELINE nou: {len(data_new['PIPELINE'])}")
-            pdf.multi_cell(0, 5, f"Nr. proiecte în SOP vechi: {len(data_old['SOP'])}")
-            pdf.multi_cell(0, 5, f"Nr. proiecte în SOP nou: {len(data_new['SOP'])}")
-            pdf.multi_cell(0, 5, f"Raport generat la: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+
+            pdf.multi_cell(0, 5, f"Nr. magazine în PIPELINE vechi: {lung_pip_vechi_minusdoi} --> noi: {lung_pip_noi_minusdoi}")
+            pdf.multi_cell(0, 5, f"Nr. magazine în SOP vechi: {lung_sop_vechi_minusdoi} --> noi: {lung_sop_noi_minusdoi}")
+
+            pdf.multi_cell(0, 5, f"Nr. magazine în PIPELINE vechi: {len(data_old['PIPELINE'])}")
+            pdf.multi_cell(0, 5, f"Nr. magazine în PIPELINE nou: {len(data_new['PIPELINE'])}")
+            pdf.multi_cell(0, 5, f"Nr. magazine în SOP vechi: {len(data_old['SOP'])}")
+            pdf.multi_cell(0, 5, f"Nr. magazine în SOP nou: {len(data_new['SOP'])}")
+            
             pdf.ln(5)
 
             added_pipeline, modified_pipeline, removed_pipeline = compare_data(data_old["PIPELINE"], data_new["PIPELINE"], "Asgard ID")
@@ -178,13 +183,13 @@ if file_old and file_new:
             _, _, sop_removed = compare_data(data_old["SOP"], data_new["SOP"], "Asgard ID")
 
             sections = [
-                ("1. Proiecte nou apărute în PIPELINE", added_pipeline),
-                ("2. Proiecte modificate în PIPELINE", pd.DataFrame(modified_pipeline)[["Asgard ID", "City", "Diferențe"]]),
-                ("3. Proiecte scoase din PIPELINE care nu au apărut în SOP", removed_not_in_sop),
-                ("4. Proiecte scoase din PIPELINE care au apărut în SOP", removed_in_sop),
-                ("5. Proiecte apărute în SOP care nu erau în SOP vechi", sop_added),
-                ("6. Proiecte din SOP la care s-au modificat parametri", pd.DataFrame(sop_modified)[["Asgard ID", "Diferențe"]]) if sop_modified else ("6. Proiecte din SOP la care s-au modificat parametri", pd.DataFrame()),
-                ("7. Proiecte care au fost scoase din lista SOP", sop_removed),
+                ("1. Magazine nou apărute în PIPELINE", added_pipeline),
+                ("2. Magazine modificate în PIPELINE", pd.DataFrame(modified_pipeline)[["Asgard ID", "City", "Diferențe"]]),
+                ("3. Magazine scoase din PIPELINE care nu au apărut în SOP", removed_not_in_sop),
+                ("4. Magazine scoase din PIPELINE care au apărut în SOP", removed_in_sop),
+                ("5. Magazine apărute în SOP care nu erau în SOP vechi", sop_added),
+                ("6. Magazine din SOP la care s-au modificat parametri", pd.DataFrame(sop_modified)[["Asgard ID", "Diferențe"]]) if sop_modified else ("6. Magazine din SOP la care s-au modificat parametri", pd.DataFrame()),
+                ("7. Magazine care au fost scoase din lista SOP", sop_removed),
             ]
 
             for title, df in sections:

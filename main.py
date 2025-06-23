@@ -94,6 +94,7 @@ if file_old and file_new:
         st.markdown(f"- **Nr. proiecte în PIPELINE vechi:** {len(data_old['PIPELINE'])}")
         st.markdown(lung_pipeline_vechi)
         st.markdown(lung_pip_vechi_minusdoi)
+        st.markdown(f"- **Nr. proiecte în PIPELINE vechi:** {lung_pip_vechi_minusdoi}")
         st.markdown(f"- **Nr. proiecte în PIPELINE nou:** {len(data_new['PIPELINE'])}")
         st.markdown(f"- **Nr. proiecte în SOP vechi:** {len(data_old['SOP'])}")
         st.markdown(f"- **Nr. proiecte în SOP nou:** {len(data_new['SOP'])}")

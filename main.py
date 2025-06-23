@@ -103,7 +103,7 @@ if file_old and file_new:
         st.write(added_pipeline)
 
         st.subheader("2. Proiecte din PIPELINE care au suferit modificări")
-        st.write(pd.DataFrame(modified_pipeline)[["Asgard ID", "Diferențe"]])
+        st.write(pd.DataFrame(modified_pipeline)[["Asgard ID", "City", "Diferențe"]])
 
         removed_ids = set(removed_pipeline["Asgard ID"])
         sop_new_ids = set(data_new["SOP"]["Asgard ID"])
@@ -116,8 +116,8 @@ if file_old and file_new:
         st.subheader("4. Proiecte scoase din PIPELINE care au apărut în SOP")
         st.write(removed_in_sop)
 
-        sop_added, _, _ = compare_data(data_old["PIPELINE"], data_new["SOP"], "Asgard ID")
-        st.subheader("5. Proiecte apărute în SOP care nu erau în PIPELINE")
+        sop_added, _, _ = compare_data(data_old["SOP"], data_new["SOP"], "Asgard ID")
+        st.subheader("5. Proiecte apărute în SOP nou, care nu erau în SOP vechi")
         st.write(sop_added)
 
         _, sop_modified, _ = compare_data(data_old["SOP"], data_new["SOP"], "Asgard ID")
@@ -170,10 +170,10 @@ if file_old and file_new:
 
             sections = [
                 ("1. Proiecte nou apărute în PIPELINE", added_pipeline),
-                ("2. Proiecte modificate în PIPELINE", pd.DataFrame(modified_pipeline)[["Asgard ID", "Diferențe"]]),
+                ("2. Proiecte modificate în PIPELINE", pd.DataFrame(modified_pipeline)[["Asgard ID", "City", "Diferențe"]]),
                 ("3. Proiecte scoase din PIPELINE care nu au apărut în SOP", removed_not_in_sop),
                 ("4. Proiecte scoase din PIPELINE care au apărut în SOP", removed_in_sop),
-                ("5. Proiecte apărute în SOP care nu erau în PIPELINE", sop_added),
+                ("5. Proiecte apărute în SOP care nu erau în SOP vechi", sop_added),
                 ("6. Proiecte din SOP la care s-au modificat parametri", pd.DataFrame(sop_modified)[["Asgard ID", "Diferențe"]]) if sop_modified else ("6. Proiecte din SOP la care s-au modificat parametri", pd.DataFrame()),
                 ("7. Proiecte care au fost scoase din lista SOP", sop_removed),
             ]

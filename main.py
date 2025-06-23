@@ -6,9 +6,9 @@ from fpdf import FPDF
 import io
 import os
 
-st.set_page_config(page_title="Comparare Proiecte Excel", layout="wide")
+st.set_page_config(page_title="SOP compare", layout="wide")
 
-st.title("🗂️ Comparare Proiecte între două versiuni Excel")
+st.title("🗂️ Compara SOP si pipeline")
 st.write("Încarcă două fișiere Excel care conțin sheet-urile 'PIPELINE' și 'SOP'. Scriptul va detecta automat diferențele.")
 
 file_old = st.file_uploader("Fișier Excel - Vechi", type=["xlsx"], key="old")

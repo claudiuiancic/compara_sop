@@ -108,9 +108,11 @@ if file_old and file_new:
             data_old["PIPELINE"], data_new["PIPELINE"], "Asgard ID"
         )
 
+        # 1. Magazine nou apărute în PIPELINE
         st.subheader("1. Magazine nou apărute în PIPELINE")
         st.write(added_pipeline)
 
+        # 2. Magazine din PIPELINE la care s-a modificat ceva
         st.subheader("2. Magazine din PIPELINE la care s-a modificat ceva")
         if modified_pipeline:
             df_mod = pd.DataFrame(modified_pipeline)
@@ -124,34 +126,32 @@ if file_old and file_new:
         removed_not_in_sop = removed_pipeline[~removed_pipeline["Asgard ID"].isin(sop_new_ids)]
         removed_in_sop = removed_pipeline[removed_pipeline["Asgard ID"].isin(sop_new_ids)]
 
+        # 3. Magazine scoase din PIPELINE care nu au apărut în SOP
         st.subheader("3. Magazine scoase din PIPELINE care nu au apărut în SOP")
         st.write(removed_not_in_sop)
 
+        # 4. Magazine mutate din PIPELINE în SOP (contract semnat)
         st.subheader("4. Magazine mutate din PIPELINE în SOP (contract semnat)")
         st.write(removed_in_sop)
 
-        # variabila initiala
-        sop_added, _, _ = compare_data(data_old["SOP"], data_new["SOP"], "Asgard ID")
-        st.subheader("5. Magazine apărute în SOP care nu erau în SOP vechi")
-        st.write(sop_added)
-
-        # Seturi cu ID-urile existente anterior
+        # 5. Magazine apărute în SOP care nu erau în SOP vechi și nici în PIPELINE vechi
+            # Seturi cu ID-urile existente anterior
         sop_vechi_ids = set(data_old["SOP"]["Asgard ID"])
         pipeline_vechi_ids = set(data_old["PIPELINE"]["Asgard ID"])
 
-        # SOP nou
+            # SOP nou
         sop_nou_df = data_new["SOP"]
 
-        # Filtrare: doar ID-urile noi, care nu existau în niciuna dintre listele vechi
+            # Filtrare: doar ID-urile noi, care nu existau în niciuna dintre listele vechi
         sop_added_filtered = sop_nou_df[
             ~sop_nou_df["Asgard ID"].isin(sop_vechi_ids.union(pipeline_vechi_ids))
         ]
 
-        # Afișare
+            # Afișare
         st.subheader("5. Magazine apărute în SOP care nu erau în SOP vechi și nici în PIPELINE vechi")
         st.write(sop_added_filtered)
 
-
+        # 6. Magazine din SOP la care s-a modificat ceva
         _, sop_modified, _ = compare_data(data_old["SOP"], data_new["SOP"], "Asgard ID")
         st.subheader("6. Magazine din SOP la care s-a modificat ceva")
         if sop_modified:
@@ -159,6 +159,7 @@ if file_old and file_new:
         else:
             st.write("Nu există Magazine modificate în SOP.")
 
+        # 7. Magazine care au fost scoase din SOP (probabil deschise)
         _, _, sop_removed = compare_data(data_old["SOP"], data_new["SOP"], "Asgard ID")
         st.subheader("7. Magazine care au fost scoase din SOP (probabil deschise)")
         st.write(sop_removed)

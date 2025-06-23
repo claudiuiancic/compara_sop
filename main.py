@@ -9,7 +9,7 @@ import os
 st.set_page_config(page_title="SOP compare", layout="wide")
 
 st.title("🗂️ Compara SOP si pipeline")
-st.write("Încarcă două fișiere Excel care conțin sheet-urile 'PIPELINE' și 'SOP'. Scriptul va detecta automat diferențele.")
+st.write("Descarcă din Asgard și încarcă două fișiere Excel care conțin sheet-urile 'PIPELINE' și 'SOP'. Unul vechi și unul actual (nou). Scriptul va detecta automat diferențele.")
 
 file_old = st.file_uploader("Fișier Excel - Vechi", type=["xlsx"], key="old")
 file_new = st.file_uploader("Fișier Excel - Nou", type=["xlsx"], key="new")
@@ -88,8 +88,12 @@ if file_old and file_new:
 
         data_old = load_data(file_old)
         data_new = load_data(file_new)
+        lung_pipeline_vechi = len(data_old['PIPELINE'])
+        lung_pip_vechi_minusdoi = lung_pipeline_vechi - 2
 
         st.markdown(f"- **Nr. proiecte în PIPELINE vechi:** {len(data_old['PIPELINE'])}")
+        st.markdown(lung_pipeline_vechi)
+        st.markdown(lung_pip_vechi_minusdoi)
         st.markdown(f"- **Nr. proiecte în PIPELINE nou:** {len(data_new['PIPELINE'])}")
         st.markdown(f"- **Nr. proiecte în SOP vechi:** {len(data_old['SOP'])}")
         st.markdown(f"- **Nr. proiecte în SOP nou:** {len(data_new['SOP'])}")

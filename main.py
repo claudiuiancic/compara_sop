@@ -34,13 +34,12 @@ def load_data(file):
     }
 
 def compare_data(old_df, new_df, id_col):
-    # Compară doar coloanele relevante
     compare_cols = ["City", "Format", "Typology", "Estimated Opening Date"]
     old_ids = set(old_df[id_col])
     new_ids = set(new_df[id_col])
 
-    added = new_df[~new_df[id_col].isin(old_ids)]
-    removed = old_df[~old_df[id_col].isin(new_ids)]
+    added = new_df[~new_df[id_col].isin(old_ids)][[id_col] + compare_cols]
+    removed = old_df[~old_df[id_col].isin(new_ids)][[id_col] + compare_cols]
 
     modified = []
     common_ids = old_ids & new_ids
@@ -49,6 +48,7 @@ def compare_data(old_df, new_df, id_col):
         new_row = new_df[new_df[id_col] == id_].iloc[0]
         diff_lines = []
 
+        row_data = {"Asgard ID": id_}
         for col in compare_cols:
             if col not in old_df.columns or col not in new_df.columns:
                 continue
@@ -69,12 +69,9 @@ def compare_data(old_df, new_df, id_col):
                     continue
                 if old_val != new_val:
                     diff_lines.append(f"{col}: {old_val} -> {new_val}")
-
         if diff_lines:
-            modified.append({
-                "Asgard ID": id_,
-                "Diferențe": "\n".join(diff_lines)
-            })
+            row_data["Diferențe"] = "\n".join(diff_lines)
+            modified.append(row_data)
 
     return added, modified, removed
 
@@ -95,19 +92,21 @@ if file_old and file_new:
 
         st.header("📊 Rezultatele comparației")
         added_pipeline, modified_pipeline, removed_pipeline = compare_data(data_old["PIPELINE"], data_new["PIPELINE"], "Asgard ID")
+
         st.subheader("1. Proiecte nou apărute în PIPELINE")
         st.write(added_pipeline)
 
         st.subheader("2. Proiecte din PIPELINE care au suferit modificări")
-        st.write(pd.DataFrame(modified_pipeline))
+        st.write(pd.DataFrame(modified_pipeline)[["Asgard ID", "Diferențe"]])
 
         removed_ids = set(removed_pipeline["Asgard ID"])
         sop_new_ids = set(data_new["SOP"]["Asgard ID"])
         removed_not_in_sop = removed_pipeline[~removed_pipeline["Asgard ID"].isin(sop_new_ids)]
+        removed_in_sop = removed_pipeline[removed_pipeline["Asgard ID"].isin(sop_new_ids)]
+
         st.subheader("3. Proiecte scoase din PIPELINE care nu au apărut în SOP")
         st.write(removed_not_in_sop)
 
-        removed_in_sop = removed_pipeline[removed_pipeline["Asgard ID"].isin(sop_new_ids)]
         st.subheader("4. Proiecte scoase din PIPELINE care au apărut în SOP")
         st.write(removed_in_sop)
 
@@ -117,7 +116,7 @@ if file_old and file_new:
 
         _, sop_modified, _ = compare_data(data_old["SOP"], data_new["SOP"], "Asgard ID")
         st.subheader("6. Proiecte din SOP la care s-au modificat parametri")
-        st.write(pd.DataFrame(sop_modified))
+        st.write(pd.DataFrame(sop_modified)[["Asgard ID", "Diferențe"]])
 
         _, _, sop_removed = compare_data(data_old["SOP"], data_new["SOP"], "Asgard ID")
         st.subheader("7. Proiecte care au fost scoase din lista SOP")
@@ -125,7 +124,7 @@ if file_old and file_new:
 
         st.header("📥 Export Raport în PDF")
         if st.button("📄 Descarcă raportul ca PDF"):
-            pdf = FPDF()
+            pdf = FPDF(format='A4')
             pdf.add_page()
             pdf.set_auto_page_break(auto=True, margin=15)
             pdf.set_font("Arial", size=10)
@@ -153,11 +152,11 @@ if file_old and file_new:
 
             sections = [
                 ("1. Proiecte nou apărute în PIPELINE", added_pipeline),
-                ("2. Proiecte modificate în PIPELINE", pd.DataFrame(modified_pipeline)),
+                ("2. Proiecte modificate în PIPELINE", pd.DataFrame(modified_pipeline)[["Asgard ID", "Diferențe"]]),
                 ("3. Proiecte scoase din PIPELINE care nu au apărut în SOP", removed_not_in_sop),
                 ("4. Proiecte scoase din PIPELINE care au apărut în SOP", removed_in_sop),
                 ("5. Proiecte apărute în SOP care nu erau în PIPELINE", sop_added),
-                ("6. Proiecte din SOP la care s-au modificat parametri", pd.DataFrame(sop_modified)),
+                ("6. Proiecte din SOP la care s-au modificat parametri", pd.DataFrame(sop_modified)[["Asgard ID", "Diferențe"]]),
                 ("7. Proiecte care au fost scoase din lista SOP", sop_removed),
             ]
 
@@ -177,5 +176,6 @@ if file_old and file_new:
                 file_name="raport_proiecte.pdf",
                 mime="application/pdf"
             )
+
     except Exception as e:
         st.error(f"Eroare la procesare: {e}")

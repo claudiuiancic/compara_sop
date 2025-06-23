@@ -188,7 +188,7 @@ if file_old and file_new:
             st.download_button(
                 label="📥 Descarcă PDF",
                 data=pdf_bytes,
-                file_name="raport_proiecte.pdf",
+                file_name=f"Raport comparatie SOP {datetime.now().strftime('%Y-%m-%d %H:%M')}.pdf",
                 mime="application/pdf"
             )
 

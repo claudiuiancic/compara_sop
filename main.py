@@ -49,7 +49,10 @@ def compare_data(old_df, new_df, id_col):
         new_row = new_df[new_df[id_col] == id_].iloc[0]
         diff_lines = []
 
-        row_data = {"Asgard ID": id_}
+        row_data = {
+            "Asgard ID": id_,
+            "City": new_row.get("City", "")
+        }
         for col in compare_cols:
             if col not in old_df.columns or col not in new_df.columns:
                 continue

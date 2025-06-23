@@ -211,7 +211,6 @@ if file_old and file_new:
                     if modified_pipeline else pd.DataFrame()),
                 ("3. Magazine scoase din PIPELINE care nu au apărut în SOP", removed_not_in_sop),
                 ("4. Magazine mutate din PIPELINE în SOP (contract semnat)", removed_in_sop),
-                ("5. Magazine apărute în SOP care nu erau în SOP vechi", sop_added),
                 ("5. Magazine apărute în SOP care nu erau în SOP vechi și nici în PIPELINE vechi", sop_added_filtered),
                 ("6. Magazine din SOP la care s-a modificat ceva", pd.DataFrame(sop_modified)[["Asgard ID", "City", "Diferențe"]]) if sop_modified else ("6. Magazine din SOP la care s-au modificat parametri", pd.DataFrame()),
                 ("7. Magazine care au fost scoase din SOP (probabil deschise)", sop_removed),

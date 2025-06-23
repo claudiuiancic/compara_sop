@@ -132,6 +132,8 @@ if file_old and file_new:
 
         # variabila initiala
         sop_added, _, _ = compare_data(data_old["SOP"], data_new["SOP"], "Asgard ID")
+        st.subheader("5. Magazine apărute în SOP care nu erau în SOP vechi")
+        st.write(sop_added)
 
         # Seturi cu ID-urile existente anterior
         sop_vechi_ids = set(data_old["SOP"]["Asgard ID"])
@@ -148,10 +150,7 @@ if file_old and file_new:
         # Afișare
         st.subheader("5. Magazine apărute în SOP care nu erau în SOP vechi și nici în PIPELINE vechi")
         st.write(sop_added_filtered)
-        
-        # forma veche
-        st.write(sop_added)
-        st.subheader("5. Magazine apărute în SOP care nu erau în SOP vechi")
+
 
         _, sop_modified, _ = compare_data(data_old["SOP"], data_new["SOP"], "Asgard ID")
         st.subheader("6. Magazine din SOP la care s-a modificat ceva")

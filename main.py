@@ -155,7 +155,7 @@ if file_old and file_new:
         _, sop_modified, _ = compare_data(data_old["SOP"], data_new["SOP"], "Asgard ID")
         st.subheader("6. Magazine din SOP la care s-a modificat ceva")
         if sop_modified:
-            st.write(pd.DataFrame(sop_modified)[["Asgard ID", "Diferențe"]])
+            st.write(pd.DataFrame(sop_modified)[["Asgard ID", "City", "Diferențe"]])
         else:
             st.write("Nu există Magazine modificate în SOP.")
 

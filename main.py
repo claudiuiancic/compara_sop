@@ -169,6 +169,7 @@ if file_old and file_new:
         # ========================
 
         st.header("📥 Exportă raportul ca PDF")
+        st.write("Pentru a salva raportul ca fisier pdf apasa butonul de generare si apoi cel de descarcare.")
         if st.button("📄 Genereaza PDF"):
             pdf = FPDF(format='A4')
             pdf.add_page()

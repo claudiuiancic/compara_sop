@@ -112,7 +112,12 @@ if file_old and file_new:
         st.write(added_pipeline)
 
         st.subheader("2. Magazine din PIPELINE la care s-a modificat ceva")
-        st.write(pd.DataFrame(modified_pipeline)[["Asgard ID", "City", "Diferențe"]])
+        if modified_pipeline:
+            df_mod = pd.DataFrame(modified_pipeline)
+            cols = [col for col in ["Asgard ID", "City", "Diferențe"] if col in df_mod.columns]
+            st.write(df_mod[cols])
+        else:
+            st.write("Nu există Magazine modificate în PIPELINE.")
 
         removed_ids = set(removed_pipeline["Asgard ID"])
         sop_new_ids = set(data_new["SOP"]["Asgard ID"])
@@ -181,7 +186,9 @@ if file_old and file_new:
 
             sections = [
                 ("1. Magazine nou apărute în PIPELINE", added_pipeline),
-                ("2. Magazine din PIPELINE la care s-a modificat ceva", pd.DataFrame(modified_pipeline)[["Asgard ID", "City", "Diferențe"]]),
+                ("2. Magazine din PIPELINE la care s-a modificat ceva",
+                    pd.DataFrame(modified_pipeline)[["Asgard ID", "City", "Diferențe"]]
+                    if modified_pipeline else pd.DataFrame()),
                 ("3. Magazine scoase din PIPELINE care nu au apărut în SOP", removed_not_in_sop),
                 ("4. Magazine mutate din PIPELINE în SOP (contract semnat)", removed_in_sop),
                 ("5. Magazine apărute în SOP care nu erau în SOP vechi", sop_added),

@@ -127,43 +127,6 @@ if file_old and file_new:
         st.subheader("7. Proiecte care au fost scoase din lista SOP")
         st.write(sop_removed)
 
-
-        
-        st.header("📊 Rezultatele comparației")
-
-        added_pipeline, modified_pipeline, removed_pipeline = compare_data(
-            data_old["PIPELINE"], data_new["PIPELINE"], "Asgard ID"
-        )
-
-        st.subheader("1. Proiecte nou apărute în PIPELINE")
-        st.write(added_pipeline)
-
-        st.subheader("2. Proiecte din PIPELINE care au suferit modificări")
-        st.write(pd.DataFrame(modified_pipeline)[["Asgard ID", "Diferențe"]])
-
-        removed_ids = set(removed_pipeline["Asgard ID"])
-        sop_new_ids = set(data_new["SOP"]["Asgard ID"])
-        removed_not_in_sop = removed_pipeline[~removed_pipeline["Asgard ID"].isin(sop_new_ids)]
-        removed_in_sop = removed_pipeline[removed_pipeline["Asgard ID"].isin(sop_new_ids)]
-
-        st.subheader("3. Proiecte scoase din PIPELINE care nu au apărut în SOP")
-        st.write(removed_not_in_sop)
-
-        st.subheader("4. Proiecte scoase din PIPELINE care au apărut în SOP")
-        st.write(removed_in_sop)
-
-        sop_added, _, _ = compare_data(data_old["PIPELINE"], data_new["SOP"], "Asgard ID")
-        st.subheader("5. Proiecte apărute în SOP care nu erau în PIPELINE")
-        st.write(sop_added)
-
-        _, sop_modified, _ = compare_data(data_old["SOP"], data_new["SOP"], "Asgard ID")
-        st.subheader("6. Proiecte din SOP la care s-au modificat parametri")
-        st.write(pd.DataFrame(sop_modified)[["Asgard ID", "Diferențe"]])
-
-        _, _, sop_removed = compare_data(data_old["SOP"], data_new["SOP"], "Asgard ID")
-        st.subheader("7. Proiecte care au fost scoase din lista SOP")
-        st.write(sop_removed)
-
         st.header("📥 Export Raport în PDF")
         if st.button("📄 Descarcă raportul ca PDF"):
             pdf = FPDF(format='A4')
